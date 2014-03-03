@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, intial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>{% block title %}Trip Planner{% endblock %}</title>
+
+	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://getbootstrap.com/examples/justified-nav/justified-nav.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap_overrides.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+<body>
+<div class="container">
+	 <div class="masthead">
+        <h3 class="#">Trip Planner</h3>
+        <ul class="nav nav-justified">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+   </div>
+</div>
+
+<div class="container">
+	{% block content %}{% endblock %}
+</div>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+</script>
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js">
+</script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js">
+</script>
+<script type="text/javascript" src="/javascripts/script.js"></script>
+
+{% block bottomscripts %}{% endblock %}
+</body>
+</html>

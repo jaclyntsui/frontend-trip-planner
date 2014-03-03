@@ -1,0 +1,119 @@
+{% extends "layout.html"%}
+
+{% block content %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHu4O5t_eXdI0SCxTFwa1O5N_iF4it4EU&sensor=true"></script>
+<script type="text/javascript">
+var map;
+  function initialize_gmaps() {
+  	var myLatlng = new google.maps.LatLng(40.705786,-74.007672);
+  // set the map options hash
+  var mapOptions = {
+    center: myLatlng,
+    zoom: 16,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+  // get the maps div's HTML obj
+  var map_canvas_obj = document.getElementById("map-canvas");
+
+  // initialize a new Google Map with the options
+  // var map = new google.maps.Map(map_canvas_obj, mapOptions);
+
+
+
+//   // Add the marker to the map by calling setMap()
+//   marker.setMap(map);
+}
+google.maps.event.addDomListener(window, 'load', initialize_gmaps);
+$(document).ready(function() {
+  initialize_gmaps();
+});
+</script>
+
+<div class='row'>
+  <div class='col-md-4'>
+    <div class='btn-toolbar'>
+      <div class="btn-group" id='day_buttons'>
+      </div>
+      <div class='btn-group'>
+        <button type="button" class="btn btn-default" id='add_day_button'>+ Add Day</button>
+      </div>
+    </div>
+  </div>
+  <div class='col-md-8'>
+    <div class='places_select_box'>
+      <h3>Hotels</h3>
+      <select class="form-control places_select" id="hotel_select">
+        {% for i,hotel in all_hotels %}
+          <!-- <option value="{{hotel._id.toString()}}">{{hotel.place[0].name}}</option> -->
+          <option value="hotel_{{i}}">{{hotel.place[0].name}}</option>
+        {% endfor %}
+      </select>
+      <button class='btn btn-primary' id='hotel_add_button'>Add</button>
+    </div>
+    <div class='places_select_box'>
+      <h3>Things to do</h3>
+      <select class="form-control places_select" id="thingtodo_select">
+        {% for key, ttd in all_thingstodo %}
+          <option value="ttd_{{key}}">{{ttd.place[0].name}}</option>
+        {% endfor %}
+      </select>
+      <button class='btn btn-primary' id='thingtodo_add_button'>Add</button>
+    </div>
+    <div class='places_select_box'>
+      <h3>Restaurants</h3>
+      <select class="form-control places_select" id="restaurant_select">
+        {% for key, rest in all_restaurants %}
+          <option value="restaurant_{{key}}">{{rest.place[0].name}}</option>
+        {% endfor %}
+      </select>
+      <button class='btn btn-primary' id='restaurant_add_button'>Add</button>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-3'>
+  <h3>Plan</h3>
+  <div>
+    <ul>
+    <li>
+      <h4>Hotel</h4>
+      <ul id='hotel_list'>
+      </ul>
+    </li>
+    <li>
+      <h4>Things to Do</h4>
+      <ul id='thingtodo_list'>
+      </ul>
+    </li>
+    <li>
+      <h4>Restaurants</h4>
+      <ul id='restaurant_list'>
+      </ul>
+    </li>
+  </div>
+</div>
+
+<div class='col-md-9'>
+  <div id="map-canvas"></div>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block bottomscripts  %}
+  <script>
+    {% autoescape false %}
+      var hotels_obj = {{ all_hotels | json }};
+      var thingtodos_obj = {{ all_thingstodo | json }};
+      var restaurants_obj = {{ all_restaurants | json }};
+    {% endautoescape %}
+  </script>
+{% endblock %}
+</body>
+</html>

@@ -1,8 +1,35 @@
+html {
+  height: 100%; }
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+  padding-top: 70px;
 }
 
-a {
-  color: #00B7FF;
+.btn-toolbar{
+	margin-top: 10%;
 }
+
+#map-canvas {
+	width: 100%;
+  height: 400px;
+  margin-top: 20px;
+  margin-bottom: 20px
+}
+
+/*.cleardiv {clear:both;}*/
+.places_select_box {
+	margin-top: 5%;
+  width: 31%;
+  float: left;
+  margin-right: 3%; }
+  .places_select_box:last-child {
+    margin-right: 0; }
+  .places_select_box h3 {
+    margin-top: 0; }
+  .places_select_box select {
+    width: 70%;
+    display: inline-block; }
+  .places_select_box button {
+    display: inline-block;
+    width: 25%; }
