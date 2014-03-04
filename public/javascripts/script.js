@@ -6,9 +6,18 @@ var addNewDay = function(){
 		thingtodos: [],
 		restaurants: []
 	});
+	var display_day = current_day + 1;
+	$('#day_buttons').append("<button type='button' id='day_button_'+current_day+' class='btn btn-default'>Day "+display_day+"</button>");
+	$('#day_button_'+current_day).click(function(){
+		toggleToDay(current_day);
+	});
+	current_day++;
 };
 
-addNewDay();
+var toggleToDay = function(day){
+
+};
+
 var current_day = 0;
 
 // hotel, thingtodo, restaurant
@@ -25,13 +34,23 @@ var addItem = function(type){
 	marker.setMap(map);
 };
 
+var initEvents = function(){
 	var types = ['hotel', 'restaurant', 'thingtodo'];
 	types.forEach(function(type){
 		$('#'+type+'_add_button').click(function(e){
 			addItem(type);
-		})
+		});
+	});
+	$('#add_day_button').click(function(){
+		addNewDay();
 	})
+};
 
+var initApp = function(){
+  initialize_gmaps();
+	initEvents();
+	addNewDay();
+};
 
 // $('#hotel_add_button').click(function(e){
 // 	var selected_value = $('#hotel_select').val();
