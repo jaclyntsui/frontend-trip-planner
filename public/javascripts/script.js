@@ -2,7 +2,29 @@ var my_trip = [];
 var num_days = 0;
 var current_day = 0;
 var item_types = ['hotel', 'restaurant', 'thingtodo'];
+var markerPool = [];
+var currentMarkers = [];
 
+var getNewMarker = function(lat, lon, title){
+	var usedMarker = markerPool.pop();
+	if (typeof usedMarker != 'undefined'){
+		return rePurposeMarker(usedMarker, lat, lon, title);
+	} else {
+		var myLatlng = new google.maps.LatLng(lat, lon);
+		var newmarker = new google.maps.Marker({position: myLatlng, title: title});
+		return newmarker;
+	}
+};
+
+var rePurposeMarker = function(usedMarker, lat, lon, title){
+	var newLatlng = new google.maps.LatLng(lat, lon);
+	usedMarker.setPosition(newLatlng); //reset latlng of any marker
+	if(typeof title != 'undefined'){
+		title = "";
+	}
+	usedMarker.setTitle(title);
+	return usedMarker;
+};
 
 var addNewDay = function(){
 	my_trip.push({
@@ -23,18 +45,34 @@ var addNewDay = function(){
 };
 
 var toggleToDay = function(day){
+	$('#day_button_'+current_day).removeClass('active');
 	current_day = day;
 	$('day_button_'+current_day).addClass('active');
 
 	//reset the item list to load trip plan items from the current_day
 	var day_items = my_trip[current_day];
 	var type_items;
+
+	//clear the map of markers
+	while(currentMarkers.length > 0){
+		var marker = currentMarkers.pop();
+		markerPool.push(marker);
+		marker.setMap(null);
+	}
+
 	item_types.forEach(function(type){
 		$('#'+type+'_list').html('');
 
 		type_items = day_items[type+'s'];
 		type_items.forEach(function(item){
-		addItemHtml(type, item);
+
+			//add marker to map
+			var marker = getNewMarker(item.place[0].location[0], item.place[0].location[1], item.place[0].name);
+			marker.setMap(map);
+			currentMarkers.push(marker);
+
+			//add item to list
+			addItemHtml(type, item);
 		});
 	});
 };
@@ -54,6 +92,7 @@ var addItem = function(type){
 	var myLatlng = new google.maps.LatLng(item.place[0].location[0], item.place[0].location[1]);
 	var marker = new google.maps.Marker({position: myLatlng, map: map, title: item.place[0].name});
 	marker.setMap(map);
+	currentMarkers.push(marker);
 };
 
 var initEvents = function(){
@@ -71,7 +110,7 @@ var initApp = function(){
   initialize_gmaps();
 	initEvents();
 	addNewDay();
-	$('#day_button_'+current_day).removeClass('active');
+	$('#day_button_0').addClass('active');
 };
 
 // $('#hotel_add_button').click(function(e){
