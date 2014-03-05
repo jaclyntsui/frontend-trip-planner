@@ -23,8 +23,8 @@ var addNewDay = function(){
 };
 
 var toggleToDay = function(day){
-	console.log('day clicked: ', day);
 	current_day = day;
+	$('day_button_'+current_day).addClass('active');
 
 	//reset the item list to load trip plan items from the current_day
 	var day_items = my_trip[current_day];
@@ -34,7 +34,7 @@ var toggleToDay = function(day){
 
 		type_items = day_items[type+'s'];
 		type_items.forEach(function(item){
-			addItemhtml(type, item);
+		addItemHtml(type, item);
 		});
 	});
 };
@@ -71,6 +71,7 @@ var initApp = function(){
   initialize_gmaps();
 	initEvents();
 	addNewDay();
+	$('#day_button_'+current_day).removeClass('active');
 };
 
 // $('#hotel_add_button').click(function(e){
