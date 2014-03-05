@@ -1,4 +1,8 @@
 var my_trip = [];
+var num_days = 0;
+var current_day = 0;
+var item_types = ['hotel', 'restaurant', 'thingtodo'];
+
 
 var addNewDay = function(){
 	my_trip.push({
@@ -6,27 +10,45 @@ var addNewDay = function(){
 		thingtodos: [],
 		restaurants: []
 	});
-	var display_day = current_day + 1;
-	$('#day_buttons').append("<button type='button' id='day_button_'+current_day+' class='btn btn-default'>Day "+display_day+"</button>");
-	$('#day_button_'+current_day).click(function(){
-		toggleToDay(current_day);
-	});
-	current_day++;
+
+ var display_day = num_days + 1;
+  $('#day_buttons').append("<button type='button' id='day_button_"+num_days+"' class='btn btn-default'>Day "+display_day+"</button>");
+
+  var this_day = num_days;
+  $('#day_button_'+num_days).click(function() {
+    toggleToDay(this_day);
+  });
+
+  num_days++;
 };
 
 var toggleToDay = function(day){
+	console.log('day clicked: ', day);
+	current_day = day;
 
+	//reset the item list to load trip plan items from the current_day
+	var day_items = my_trip[current_day];
+	var type_items;
+	item_types.forEach(function(type){
+		$('#'+type+'_list').html('');
+
+		type_items = day_items[type+'s'];
+		type_items.forEach(function(item){
+			addItemhtml(type, item);
+		});
+	});
 };
 
-var current_day = 0;
+var addItemHtml = function (type, item) {
+  $('#'+type+'_list').append("<li>"+ item.place[0].name +"</li>");
+};
 
 // hotel, thingtodo, restaurant
 var addItem = function(type){
 	var selected_value = $('#'+type+'_select').val();
 	var item_key = selected_value.split("_")[1];
 	var item = window[type+'s_obj'][item_key];
-
-	$('#'+type+'_list').append("<li>"+ item.place[0].name +"</li>");
+	addItemHtml(type, item);
 	my_trip[current_day][type+'s'].push(item);
 
 	var myLatlng = new google.maps.LatLng(item.place[0].location[0], item.place[0].location[1]);
@@ -35,8 +57,7 @@ var addItem = function(type){
 };
 
 var initEvents = function(){
-	var types = ['hotel', 'restaurant', 'thingtodo'];
-	types.forEach(function(type){
+	item_types.forEach(function(type){
 		$('#'+type+'_add_button').click(function(e){
 			addItem(type);
 		});
